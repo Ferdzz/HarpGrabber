@@ -32,10 +32,12 @@ def requestTabs(progressBar):
 
 		# Get the HTML within the page
 		urllib.request.install_opener(opener)
-		html = urlopen(printUrl).read().decode().replace("&nbsp;", " ")  # Replace the non breaking spaces as they create errors with generated files
+		print('Downloading ' + printUrl)
+		html = urlopen(printUrl).read().decode(errors='ignore').replace("&nbsp;", " ")  # Replace the non breaking spaces as they create errors with generated files
 
 		# Extract the name from the HTML header
 		title = re.search('(?<=<title>).+?(?=</title>)', html, re.DOTALL).group().strip()
+		title = title.replace('*', '').replace('.', '').replace(':', '').replace('?', '')
 
 		# Write the HTML file to disk
 		filePath = os.path.join(dir, title + ".html")
